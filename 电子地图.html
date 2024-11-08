@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+    <style>   
+        html,
+        body,    
+    #container {
+    width: 100%;
+    height: 100%;
+    }
+    .input-card{
+        position: fixed;
+        background-color: #aaa9b0;
+        overflow-y: auto;
+        width: 150px;
+        height: 150px;
+        top: 10px;
+        right: 10px;
+    }
+    .input-card .btn{
+    margin-right: 1.2rem;
+    width: 9rem;
+    }
+    .input-card .btn:last-child{
+    margin-right: 0;
+    }
+  </style>
+<script type="text/javascript">
+    window._AMapSecurityConfig = {
+      securityJsCode: "724e7a2436efd8705ef700ec2f44c7e4",
+    };
+  </script>
+  <script src="https://webapi.amap.com/loader.js"></script>
+<script src="https://webapi.amap.com/maps?v=2.0&key=9e79393c6a9ebf4024567e84733eac5d&plugin=AMap.Driving,AMap.Transfer,Amap.Walking,Amap.Riding,Amap.TruckDriving,Amap.DragRoute,AMap.MoveAnimation"></script>
+</head>
+<body>
+
+    <div id="container"></div>
+    <div class="input-card">
+    <button class="btn" onclick="startAnimation()">开始动画</button>
+    </div>
+
+    <script>
+
+          var map = new AMap.Map("container", {
+          center:[101.545944, 25.0328],
+          viewMode:'2D',
+          zoom:15,
+        });//初始地图加载
+
+        marker0 = new AMap.Marker({
+            map: map,
+            position: [101.545944, 25.0328],
+            icon: "https://a.amap.com/jsapi_demos/static/demo-center-v2/car.png",
+            offset: new AMap.Pixel(-13, -26),
+            duration:10000,
+        });//图标
+
+        AMap.plugin(["AMap.Driving","AMap.DragRoute"], function () {
+        var driving = new AMap.Driving({
+          map:map,
+          policy:0, 
+        });
+        var path = [];
+        path.push([101.545944, 25.0328]);
+        path.push([101.545234, 25.0123]);
+        path.push([101.545678, 25.0789]);
+        var route = new AMap.DragRoute(map, path, 0);//动态
+        route.search();
+        driving.search(path,function(status,result){
+            });
+        });//动态路线动画
+
+          function startAnimation(){
+            marker0.moveAlong(path,{duration:10000,})//速度
+          };
+ 
+    </script>
+    
+</body>
+</html>
